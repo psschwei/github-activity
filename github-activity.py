@@ -8,7 +8,17 @@ import sys
 
 
 def run_github_query(username, start_dt, end_dt):
+    ibmgithub = os.getenv("IBMGITHUB", "")
     url = "https://api.github.com/graphql"
+    if ibmgithub:
+        url = "https://github.ibm.com/api/graphql"
+
+    token = os.getenv("GITHUB_TOKEN", "")
+    if ibmgithub:
+        token = os.getenv("GHE_TOKEN", "")
+
+    if not token:
+        exit(1)
 
     query = f"""
     query {{
@@ -62,12 +72,13 @@ def run_github_query(username, start_dt, end_dt):
     """
 
     headers = {
-        "Authorization": f"token {os.environ['GITHUB_TOKEN']}",
+        "Authorization": f"token {token}",
         "Content-Type": "application/json",
     }
 
     response = requests.post(url, json={"query": query}, headers=headers)
     return response.json()
+
 
 def output_contributions(data):
     issues = data["data"]["user"]["contributionsCollection"]["issueContributions"][
@@ -152,7 +163,7 @@ if __name__ == "__main__":
         ).isoformat() + "T00:00:00Z"
 
     if len(sys.argv) > 3:
-        end_dt = sys.argv[3]
+        end_dt = sys.argv[3] + "T00:00:00Z"
     else:
         print("INFO: No end date provided, so will including everying up to... NOW")
         end_dt = (

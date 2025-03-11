@@ -10,6 +10,12 @@ To use this script, you will need to install the `requests`  library. You can do
 pip install requests
 ```
 
+You will also need to store your [Github personal access token](https://github.com/settings/personal-access-tokens) in an environmental variable:
+
+```bash
+export GITHUB_TOKEN=<token>
+```
+
 Once you have installed the `requests` library, you can run the script by providing the GitHub username as a command-line argument. For example, to retrieve the GitHub activity for the user `example-user`, you would run the following command:
 
 ```bash
@@ -39,6 +45,20 @@ Reviews:
 Issues:
 * some-org/some-repo
     - some issue: https://github.com/some-org/some-repo/issue/123
+```
+
+## Getting IBM Github contributions
+
+To get contributions from IBM Github (github.ibm.com), you will need to store your [IBM Github personal access token](https://github.ibm.com/settings/tokens?type=beta) in an environmental variable:
+
+```bash
+export GHE_TOKEN=<token>
+```
+
+You will also need to pass `IBMGITHUB=yes` when running the command:
+
+```bash
+IBMGITHUB=yes python github-activity.py 
 ```
 
 ## License
