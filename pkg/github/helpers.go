@@ -26,9 +26,9 @@ func getGithubQuery(u, s, e string) string {
 	query := fmt.Sprintf(`    query {
         user(login: "%s") {
             contributionsCollection(from: "%s", to: "%s") {
-              issueContributions (first: 100) { 
-                edges { 
-                    node { 
+              issueContributions (first: 100) {
+                edges {
+                    node {
                         occurredAt
                         issue {
                             title
@@ -41,11 +41,11 @@ func getGithubQuery(u, s, e string) string {
                 }
               }
               pullRequestContributions (first: 100) {
-                edges { 
-                    node { 
+                edges {
+                    node {
                         occurredAt
-                        pullRequest { 
-                            title 
+                        pullRequest {
+                            title
                             url
                             repository {
                                 nameWithOwner
@@ -54,7 +54,7 @@ func getGithubQuery(u, s, e string) string {
                     }
                 }
               }
-              pullRequestReviewContributions (first: 100) { 
+              pullRequestReviewContributions (first: 100) {
                 edges {
                     node {
                         occurredAt
@@ -90,7 +90,7 @@ type gitHubActivity struct {
 								Repository struct {
 									NameWithOwner string `json:"nameWithOwner"`
 								} `json:"repository"`
-							} `json:"pullRequest"`
+							} `json:"issue"`
 						} `json:"node"`
 					} `json:"edges"`
 				} `json:"issueContributions"`
@@ -149,6 +149,8 @@ func queryGithubApi(url, query, token string, userActivity *gitHubActivity) erro
 	}
 
 	resBody, _ := io.ReadAll(res.Body)
+
+	print(string(resBody))
 
 	if err = json.Unmarshal(resBody, &userActivity); err != nil {
 		fmt.Println("cannot unmarshal json")
