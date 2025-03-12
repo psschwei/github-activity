@@ -150,8 +150,6 @@ func queryGithubApi(url, query, token string, userActivity *gitHubActivity) erro
 
 	resBody, _ := io.ReadAll(res.Body)
 
-	print(string(resBody))
-
 	if err = json.Unmarshal(resBody, &userActivity); err != nil {
 		fmt.Println("cannot unmarshal json")
 		return err
