@@ -1,33 +1,40 @@
 # github-activity
 
-This script retrieves the GitHub activity for a specified user and prints it to the console.
+This utility retrieves the GitHub activity for a specified user and prints it to the console.
 
 ## Usage
 
-To use this script, you will need to install the `requests`  library. You can do this by running the following command in your terminal:
+To use this script, you will need to build the binary. You can do this by running the following command in your terminal:
 
 ```bash
-pip install requests
+go build
 ```
 
-You will also need to store your [Github personal access token](https://github.com/settings/personal-access-tokens) in an environmental variable:
+Once you have built the binary, move it to a place on your `PATH`. Then to see a list of options, run `github-activity --help`:
 
 ```bash
-export GITHUB_TOKEN=<token>
+$ github-activity --help
+Get PRs, reviews, and issues created during a specific time interval.
+
+Usage:
+  github-activity [flags]
+
+Flags:
+  -d, --domain string   Github domain (default "github.com")
+  -e, --end string      Collect activities up to this date (default "2025-03-11")
+  -h, --help            help for github-activity
+  -s, --start string    Collect activities starting on this date (default "2025-03-04")
+  -t, --token string    Github Personal Access Token (default $GITHUB_TOKEN)
+  -u, --user string     Username (default "paulschw")
+
 ```
 
-Once you have installed the `requests` library, you can run the script by providing the GitHub username as a command-line argument. For example, to retrieve the GitHub activity for the user `example-user`, you would run the following command:
+The utility will then retrieve the GitHub activity for the specified user and print it to the console.
+
+By default, it will pull activity for the previous seven days. To choose a different date range, pass a start date and (optional) end date to the script.
 
 ```bash
-python github-activity.py example-user
-```
-
-The script will then retrieve the GitHub activity for the specified user and print it to the console.
-
-By default, the script will pull activity for the previous seven days. To choose a different date range, pass a start date and (optional) end date to the script.
-
-```bash
-python github-activity.py example-user 2024-01-01 2024-01-31
+github-activity -s 2025-01-01 -e 2025-02-28
 ```
 
 ## Example Output
@@ -35,30 +42,34 @@ python github-activity.py example-user 2024-01-01 2024-01-31
 Here is an example of the output that the script might produce:
 
 ```
-Getting all activiting between 2024-01-01T00:00:00Z and 2024-01-31T00:00:00Z for example-user
-PRs:
-* awesome/coder
-    - feat(coder): create new coder: https://github.com/awesome/coder/pull/789
-Reviews:
-* sample/repo
-    - adding contributing guidelines for demo: https://github.com/sample/repo/pull/283
-Issues:
-* some-org/some-repo
-    - some issue: https://github.com/some-org/some-repo/issue/123
+$ ./github-activity -s 2025-03-01 -u psschwei
+Github Activity for psschwei on github.com between 2025-03-01T00:00:00Z and 2025-03-11T00:00:00Z:
+
+Pull Requests
+repo:  i-am-bee/beeai
+title: feat(agents): add open deep research agent
+url:   https://github.com/i-am-bee/beeai/pull/253
+
+Reviews
+repo:  i-am-bee/beeai-labs
+title: first version of Workflow::to_mermaid method
+url:   https://github.com/i-am-bee/beeai-labs/pull/296
+
+repo:  i-am-bee/beeai
+title: feat(agents): add open deep research agent
+url:   https://github.com/i-am-bee/beeai/pull/253
+
+repo:  i-am-bee/beeai-labs
+title: adding contributing guidelines for demo
+url:   https://github.com/i-am-bee/beeai-labs/pull/283
 ```
 
 ## Getting IBM Github contributions
 
-To get contributions from IBM Github (github.ibm.com), you will need to store your [IBM Github personal access token](https://github.ibm.com/settings/tokens?type=beta) in an environmental variable:
+To get contributions from IBM Github (github.ibm.com), you will need to use your [IBM Github personal access token](https://github.ibm.com/settings/tokens?type=beta) as the token and pass `github.ibm.com` as the domain:
 
 ```bash
-export GHE_TOKEN=<token>
-```
-
-You will also need to pass `IBMGITHUB=yes` when running the command:
-
-```bash
-IBMGITHUB=yes python github-activity.py 
+github-activity -d github.ibm.com -t <IBM_GITHUB_TOKEN>
 ```
 
 ## License
