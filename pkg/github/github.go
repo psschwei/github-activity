@@ -35,7 +35,7 @@ func GetGithubActivity(domain, startDate, endDate, username, token string) error
 		return err
 	}
 
-	fmt.Println("Github Activity for " + username + " on " + domain + " between " + startDate + " and " + endDate + ":\n")
+	fmt.Println(domain + " activity for " + username + " between " + startDate + " and " + endDate + ":\n")
 	printActivityOutput(&userActivity)
 
 	return nil

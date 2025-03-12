@@ -164,29 +164,86 @@ func printActivityOutput(userActivity *gitHubActivity) {
 
 	if len(data.PullRequestContributions.Edges) > 0 {
 		fmt.Println("Pull Requests")
-	}
-	for _, v := range data.PullRequestContributions.Edges {
-		fmt.Println("repo:  " + v.Node.PullRequest.Repository.NameWithOwner)
-		fmt.Println("title: " + v.Node.PullRequest.Title)
-		fmt.Println("url:   " + v.Node.PullRequest.Url + "\n")
+
+		// Assisted by watsonx Code Assistant
+		prOutput := make(map[string][]map[string]interface{})
+		for _, review := range data.PullRequestContributions.Edges {
+			repo := review.Node.PullRequest.Repository.NameWithOwner
+			title := review.Node.PullRequest.Title
+			url := review.Node.PullRequest.Url
+
+			if _, exists := prOutput[repo]; !exists {
+				prOutput[repo] = make([]map[string]interface{}, 0)
+			}
+
+			prOutput[repo] = append(prOutput[repo], map[string]interface{}{
+				"title": title,
+				"url":   url,
+			})
+		}
+
+		for key, repos := range prOutput {
+			fmt.Printf("* %s\n", key)
+			for _, repo := range repos {
+				fmt.Printf("    - %s: %s\n", repo["title"], repo["url"])
+			}
+		}
 	}
 
 	if len(data.PullRequestReviewContributions.Edges) > 0 {
 		fmt.Println("Reviews")
-	}
-	for _, v := range data.PullRequestReviewContributions.Edges {
-		fmt.Println("repo:  " + v.Node.PullRequest.Repository.NameWithOwner)
-		fmt.Println("title: " + v.Node.PullRequest.Title)
-		fmt.Println("url:   " + v.Node.PullRequest.Url + "\n")
+
+		// Assisted by watsonx Code Assistant
+		reviewOutput := make(map[string][]map[string]interface{})
+		for _, review := range data.PullRequestReviewContributions.Edges {
+			repo := review.Node.PullRequest.Repository.NameWithOwner
+			title := review.Node.PullRequest.Title
+			url := review.Node.PullRequest.Url
+
+			if _, exists := reviewOutput[repo]; !exists {
+				reviewOutput[repo] = make([]map[string]interface{}, 0)
+			}
+
+			reviewOutput[repo] = append(reviewOutput[repo], map[string]interface{}{
+				"title": title,
+				"url":   url,
+			})
+		}
+
+		for key, repos := range reviewOutput {
+			fmt.Printf("* %s\n", key)
+			for _, repo := range repos {
+				fmt.Printf("    - %s: %s\n", repo["title"], repo["url"])
+			}
+		}
 	}
 
 	if len(data.IssueContributions.Edges) > 0 {
 		fmt.Println("Issues")
-	}
-	for _, v := range data.IssueContributions.Edges {
-		fmt.Println("repo:  " + v.Node.Issue.Repository.NameWithOwner)
-		fmt.Println("title: " + v.Node.Issue.Title)
-		fmt.Println("url:   " + v.Node.Issue.Url + "\n")
-	}
 
+		// Assisted by watsonx Code Assistant
+		issueOutput := make(map[string][]map[string]interface{})
+		for _, review := range data.IssueContributions.Edges {
+			repo := review.Node.Issue.Repository.NameWithOwner
+			title := review.Node.Issue.Title
+			url := review.Node.Issue.Url
+
+			if _, exists := issueOutput[repo]; !exists {
+				issueOutput[repo] = make([]map[string]interface{}, 0)
+			}
+
+			issueOutput[repo] = append(issueOutput[repo], map[string]interface{}{
+				"title": title,
+				"url":   url,
+			})
+		}
+
+		for key, repos := range issueOutput {
+			fmt.Printf("* %s\n", key)
+			for _, repo := range repos {
+				fmt.Printf("    - %s: %s\n", repo["title"], repo["url"])
+			}
+		}
+
+	}
 }
