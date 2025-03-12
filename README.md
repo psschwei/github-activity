@@ -4,13 +4,9 @@ This utility retrieves the GitHub activity for a specified user and prints it to
 
 ## Usage
 
-To use this script, you will need to build the binary. You can do this by running the following command in your terminal:
+Download the binary from the [Releases page](https://github.com/psschwei/github-activity/releases) and add it to your `PATH`.
 
-```bash
-go build
-```
-
-Once you have built the binary, move it to a place on your `PATH`. Then to see a list of options, run `github-activity --help`:
+To see a list of options, run `github-activity --help`:
 
 ```bash
 $ github-activity --help
