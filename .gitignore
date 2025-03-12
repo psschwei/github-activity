@@ -26,3 +26,5 @@ go.work.sum
 
 # created binary
 github-activity*
+# Added by goreleaser init:
+dist/
