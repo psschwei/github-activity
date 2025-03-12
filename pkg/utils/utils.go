@@ -19,7 +19,7 @@ func GetDefaultStartDate() string {
 }
 
 func GetDefaultEndDate() string {
-	return time.Now().In(time.Local).Format("2006-01-02")
+	return time.Now().In(time.Local).AddDate(0, 0, 1).Format("2006-01-02")
 }
 
 func FormatDate(input string) (string, error) {

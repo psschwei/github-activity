@@ -3,6 +3,7 @@ package github
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -141,6 +142,10 @@ func queryGithubApi(url, query, token string, userActivity *gitHubActivity) erro
 	if err != nil {
 		fmt.Errorf("unable to query github api")
 		return err
+	}
+
+	if res.StatusCode != 200 {
+		return errors.New("error querying github api: " + res.Status)
 	}
 
 	resBody, _ := io.ReadAll(res.Body)
