@@ -22,6 +22,13 @@ func GetDefaultEndDate() string {
 	return time.Now().In(time.Local).AddDate(0, 0, 1).Format("2006-01-02")
 }
 
+func GetTodayDates() (string, string) {
+	now := time.Now()
+	start := now.In(time.Local).Format("2006-01-02")
+	end := now.In(time.Local).AddDate(0,now.Hour(), 0).Format("2006-01-02")
+	return start, end
+}
+
 func GetThisWeekDates() (string, string) {
 	now := time.Now()
 	weekday := time.Duration(now.Weekday())

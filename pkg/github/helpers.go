@@ -163,7 +163,7 @@ func printActivityOutput(userActivity *gitHubActivity) {
 	data := userActivity.Data.User.ContributionsCollection
 
 	if len(data.PullRequestContributions.Edges) > 0 {
-		fmt.Println("Pull Requests")
+		fmt.Println(fmt.Sprintf("Pull Requests (%d)", len(data.PullRequestContributions.Edges)))
 
 		// Assisted by watsonx Code Assistant
 		prOutput := make(map[string][]map[string]interface{})
@@ -191,7 +191,7 @@ func printActivityOutput(userActivity *gitHubActivity) {
 	}
 
 	if len(data.PullRequestReviewContributions.Edges) > 0 {
-		fmt.Println("Reviews")
+		fmt.Println(fmt.Sprintf("Reviews (%d)", len(data.PullRequestReviewContributions.Edges)))
 
 		// Assisted by watsonx Code Assistant
 		reviewOutput := make(map[string][]map[string]interface{})
@@ -219,7 +219,7 @@ func printActivityOutput(userActivity *gitHubActivity) {
 	}
 
 	if len(data.IssueContributions.Edges) > 0 {
-		fmt.Println("Issues")
+		fmt.Println(fmt.Sprintf("Issues (%d)", len(data.IssueContributions.Edges)))
 
 		// Assisted by watsonx Code Assistant
 		issueOutput := make(map[string][]map[string]interface{})

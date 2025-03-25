@@ -18,6 +18,7 @@ var Username string
 var Token string
 var LastWeek bool
 var ThisWeek bool
+var Today bool
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -29,6 +30,8 @@ var rootCmd = &cobra.Command{
 			StartDate, EndDate = utils.GetLastWeekDates()
 		} else if ThisWeek == true {
 			StartDate, EndDate = utils.GetThisWeekDates()
+		} else if Today == true {
+			StartDate, EndDate = utils.GetTodayDates()
 		}
 
 		return github.GetGithubActivity(Domain, StartDate, EndDate, Username, Token)
@@ -49,7 +52,8 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&StartDate, "start", "s", utils.GetDefaultStartDate(), "Collect activities starting on this date")
 	rootCmd.PersistentFlags().StringVarP(&EndDate, "end", "e", utils.GetDefaultEndDate(), "Collect activities up to this date")
 	rootCmd.PersistentFlags().BoolVarP(&LastWeek, "last-week", "l", false, "Collect activities for last week (last week Monday to last week Friday")
-	rootCmd.PersistentFlags().BoolVarP(&ThisWeek, "this-week", "n", false, "Collect activities for this week (Monday to Friday")
+	rootCmd.PersistentFlags().BoolVarP(&ThisWeek, "this-week", "w", false, "Collect activities for this week (Monday to Friday")
+	rootCmd.PersistentFlags().BoolVarP(&Today, "today", "n", false, "Collect activities for today")
 	rootCmd.PersistentFlags().StringVarP(&Username, "user", "u", utils.GetCurrentUsername(), "Username")
 	rootCmd.PersistentFlags().StringVarP(&Token, "token", "t", "", "Github Personal Access Token (default `$GITHUB_TOKEN`)")
 }
