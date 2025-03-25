@@ -36,7 +36,7 @@ func GetThisWeekDates() (string, string) {
 		weekday = 7
 	}
 	thisMonday := now.Add(-1 * (weekday - 1) * 24 * time.Hour)
-	thisFriday := thisMonday.Add(7 * 24 * time.Hour)
+	thisFriday := thisMonday.Add(5 * 24 * time.Hour)
 
     thisMonday = time.Date(thisMonday.Year(), thisMonday.Month(), thisMonday.Day(), 0, 0, 0, 0, thisMonday.Location())
     thisFriday = time.Date(thisFriday.Year(), thisFriday.Month(), thisFriday.Day(), 0, 0, 0, 0, thisFriday.Location())
