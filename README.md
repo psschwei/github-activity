@@ -6,14 +6,14 @@ This utility retrieves the GitHub activity for a specified user and prints it to
 
 Download the binary from the [Releases page](https://github.com/psschwei/github-activity/releases) and add it to your `PATH`.
 
-To see a list of options, run `github-activity --help`:
+To see a list of options, run `gha --help`:
 
 ```bash
-$ github-activity --help
+$ gha --help
 Get PRs, reviews, and issues created during a specific time interval.
 
 Usage:
-  github-activity [flags]
+  gha [flags]
 
 Flags:
   -d, --domain string   Github domain (default "github.com")
@@ -30,7 +30,7 @@ The utility will then retrieve the GitHub activity for the specified user and pr
 By default, it will pull activity for the previous seven days. To choose a different date range, pass a start date and (optional) end date to the script.
 
 ```bash
-github-activity -s 2025-01-01 -e 2025-02-28
+gha -s 2025-01-01 -e 2025-02-28
 ```
 
 ## Example Output
@@ -38,7 +38,7 @@ github-activity -s 2025-01-01 -e 2025-02-28
 Here is an example of the output that the script might produce:
 
 ```
-$ ./github-activity -s 2025-03-01 -u psschwei
+$ ./gha -s 2025-03-01 -u psschwei
 Github Activity for psschwei on github.com between 2025-03-01T00:00:00Z and 2025-03-11T00:00:00Z:
 
 Pull Requests
@@ -65,7 +65,7 @@ url:   https://github.com/i-am-bee/beeai-labs/pull/283
 To get contributions from IBM Github (github.ibm.com), you will need to use your [IBM Github personal access token](https://github.ibm.com/settings/tokens?type=beta) as the token and pass `github.ibm.com` as the domain:
 
 ```bash
-github-activity -d github.ibm.com -t <IBM_GITHUB_TOKEN>
+gha -d github.ibm.com -t <IBM_GITHUB_TOKEN>
 ```
 
 ## License

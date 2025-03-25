@@ -11,6 +11,7 @@ builds:
     goarch:
       - amd64
       - arm64
+    binary: gha
 
 archives:
   - files:
@@ -26,4 +27,3 @@ changelog:
 
 release:
   name_template: "Release {{ .Tag }}"
-
