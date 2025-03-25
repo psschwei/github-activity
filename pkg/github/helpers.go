@@ -246,4 +246,6 @@ func printActivityOutput(userActivity *gitHubActivity) {
 		}
 
 	}
+
+	fmt.Printf(fmt.Sprintf("\nTotals: PRs(%d) Reviews(%d) Issues(%d)", len(data.PullRequestContributions.Edges), len(data.PullRequestReviewContributions.Edges), len(data.IssueContributions.Edges)))
 }
