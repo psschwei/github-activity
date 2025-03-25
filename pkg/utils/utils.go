@@ -56,7 +56,7 @@ func GetLastWeekDates() (string, string) {
 	}
 
 	lastMonday := now.AddDate(0, 0, -daysToSubtract)
-	lastFriday := lastMonday.Add(7 * 24 * time.Hour)
+	lastFriday := lastMonday.Add(5 * 24 * time.Hour)
 
     lastMonday = time.Date(lastMonday.Year(), lastMonday.Month(), lastMonday.Day(), 0, 0, 0, 0, lastMonday.Location())
     lastFriday = time.Date(lastFriday.Year(), lastFriday.Month(), lastFriday.Day(), 0, 0, 0, 0, lastFriday.Location())
