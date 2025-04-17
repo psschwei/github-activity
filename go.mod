@@ -1,4 +1,4 @@
-module github.com/psschwei/github-activity
+module github-activity
 
 go 1.23.4
 
