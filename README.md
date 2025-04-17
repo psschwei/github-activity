@@ -68,6 +68,14 @@ To get contributions from IBM Github (github.ibm.com), you will need to use your
 gha -d github.ibm.com -t <IBM_GITHUB_TOKEN>
 ```
 
+## Getting PR Data
+
+The utility can also gather PR data for a given repo and label using the following command:
+
+```bash
+gha -p -r i-am-bee/beeai-framework --label python
+```
+
 ## Contributing
 
 To build the utility locally run the following command:
