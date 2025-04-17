@@ -78,7 +78,7 @@ func getGithubQuery(u, s, e string) string {
 func getGithubPrsQuery(repo, label, cursor string) string {
 	labelStr := ""
 	if label != "" {
-		labelStr = fmt.Sprintf("label:%s", label)
+		labelStr = fmt.Sprintf("label:\\\"%s\\\"", label)
 	}
 
 	prQuery := fmt.Sprintf(`
