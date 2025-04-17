@@ -68,5 +68,13 @@ To get contributions from IBM Github (github.ibm.com), you will need to use your
 gha -d github.ibm.com -t <IBM_GITHUB_TOKEN>
 ```
 
+## Contributing
+
+To build the utility locally run the following command:
+
+```bash
+go build -o gha
+```
+
 ## License
 This script is licensed under the Apache License, Version 2.0. You can find a copy of the license in the `LICENSE` file in the root directory of this repository.

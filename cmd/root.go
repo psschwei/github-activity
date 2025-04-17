@@ -6,8 +6,8 @@ package cmd
 import (
 	"os"
 
-	"github.com/psschwei/github-activity/pkg/github"
-	"github.com/psschwei/github-activity/pkg/utils"
+	"github-activity/pkg/github"
+	"github-activity/pkg/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -20,12 +20,20 @@ var lastweek bool
 var thisweek bool
 var today bool
 
+var repo string
+var label string
+var prs bool
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "github-activity",
 	Short: "Get your Github activity",
 	Long:  `Get PRs, reviews, and issues created during a specific time interval.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if prs {
+			return github.GetPRData(domain, token, repo, label)
+		}
+
 		if lastweek == true {
 			startdate, enddate = utils.GetLastWeekDates()
 		} else if thisweek == true {
@@ -56,4 +64,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVarP(&today, "today", "n", false, "Collect activities for today")
 	rootCmd.PersistentFlags().StringVarP(&username, "user", "u", utils.GetCurrentUsername(), "Username")
 	rootCmd.PersistentFlags().StringVarP(&token, "token", "t", "", "Github Personal Access Token (default `$GITHUB_TOKEN`)")
+	rootCmd.PersistentFlags().BoolVarP(&prs, "prs", "p", false, "Return PR data")
+	rootCmd.PersistentFlags().StringVarP(&repo, "repo", "r", "i-am-bee/beeai-framework", "Github org/repo")
+	rootCmd.PersistentFlags().StringVar(&label, "label", "python", "Issue/PR label")
 }
