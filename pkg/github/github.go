@@ -41,7 +41,7 @@ func GetGithubActivity(domain, startDate, endDate, username, token string) error
 	return nil
 }
 
-func GetPRData(domain, token, repo, label string) error {
+func GetPRData(domain, token, repo, output string, labels []string) error {
 	var prData gitHubPrs
 	var nextPage gitHubPrs
 
@@ -56,7 +56,7 @@ func GetPRData(domain, token, repo, label string) error {
 		return errors.New("no Github token specified")
 	}
 
-	prQuery := getGithubPrsQuery(repo, label, cursor)
+	prQuery := getGithubPrsQuery(repo, labels, cursor)
 
 	if err := queryGithubApiPrs(url, prQuery, token, &nextPage); err != nil {
 		return err
@@ -65,7 +65,7 @@ func GetPRData(domain, token, repo, label string) error {
 	prData = nextPage
 
 	for nextPage.Data.Search.PageInfo.HasNextPage {
-		prQuery := getGithubPrsQuery(repo, label, nextPage.Data.Search.PageInfo.EndCursor)
+		prQuery := getGithubPrsQuery(repo, labels, nextPage.Data.Search.PageInfo.EndCursor)
 
 		if err := queryGithubApiPrs(url, prQuery, token, &nextPage); err != nil {
 			return err
@@ -74,7 +74,7 @@ func GetPRData(domain, token, repo, label string) error {
 		prData.Data.Search.PageInfo = nextPage.Data.Search.PageInfo
 	}
 
-	printPrDataOutput(&prData)
+	printPrDataOutput(&prData, output)
 
 	return nil
 
