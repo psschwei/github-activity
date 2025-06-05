@@ -14,15 +14,26 @@ Get PRs, reviews, and issues created during a specific time interval.
 
 Usage:
   gha [flags]
+  gha [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  issues      Get GitHub Issues data
+  prs         Get PR data
 
 Flags:
-  -d, --domain string   Github domain (default "github.com")
-  -e, --end string      Collect activities up to this date (default "2025-03-11")
-  -h, --help            help for github-activity
-  -s, --start string    Collect activities starting on this date (default "2025-03-04")
-  -t, --token string    Github Personal Access Token (default $GITHUB_TOKEN)
-  -u, --user string     Username (default "paulschw")
+  -d, --domain string         Github domain (default "github.com")
+  -e, --end string            Collect activities up to this date (default "2025-03-11")
+  -h, --help                  help for github-activity
+  -l, --last-week             Collect activities for last week (last week Monday to last week Friday)
+  -s, --start string          Collect activities starting on this date (default "2025-03-04")
+  -w, --this-week             Collect activities for this week (Monday to Friday)
+  -n, --today                 Collect activities for today
+  -t, --token $GITHUB_TOKEN   Github Personal Access Token (default $GITHUB_TOKEN)
+  -u, --user string           Username (default "paulschw")
 
+Use "github-activity [command] --help" for more information about a command.
 ```
 
 The utility will then retrieve the GitHub activity for the specified user and print it to the console.
@@ -39,25 +50,21 @@ Here is an example of the output that the script might produce:
 
 ```
 $ ./gha -s 2025-03-01 -u psschwei
-Github Activity for psschwei on github.com between 2025-03-01T00:00:00Z and 2025-03-11T00:00:00Z:
+github.com activity for psschwei between 2025-03-01T00:00:00Z and 2025-03-11T00:00:00Z:
 
-Pull Requests
-repo:  i-am-bee/beeai
-title: feat(agents): add open deep research agent
-url:   https://github.com/i-am-bee/beeai/pull/253
+Pull Requests (1)
+*  i-am-bee/beeai
+    - feat(agents): add open deep research agent: https://github.com/i-am-bee/beeai/pull/253
 
-Reviews
-repo:  i-am-bee/beeai-labs
-title: first version of Workflow::to_mermaid method
-url:   https://github.com/i-am-bee/beeai-labs/pull/296
+Reviews (3)
+* i-am-bee/beeai-labs
+    - first version of Workflow::to_mermaid method: https://github.com/i-am-bee/beeai-labs/pull/296
 
-repo:  i-am-bee/beeai
-title: feat(agents): add open deep research agent
-url:   https://github.com/i-am-bee/beeai/pull/253
+* i-am-bee/beeai
+    - feat(agents): add open deep research agent: https://github.com/i-am-bee/beeai/pull/253
 
-repo:  i-am-bee/beeai-labs
-title: adding contributing guidelines for demo
-url:   https://github.com/i-am-bee/beeai-labs/pull/283
+* i-am-bee/beeai-labs
+    - adding contributing guidelines for demo: https://github.com/i-am-bee/beeai-labs/pull/283
 ```
 
 ## Getting IBM Github contributions
@@ -73,8 +80,17 @@ gha -d github.ibm.com -t <IBM_GITHUB_TOKEN>
 The utility can also gather PR data for a given repo and label using the following command:
 
 ```bash
-gha -p -r i-am-bee/beeai-framework --label python
+gha prs -r i-am-bee/beeai-framework --label python
 ```
+
+## Getting Issue Data
+
+The utility can also gather Issue data for a given repo and label using the following command:
+
+```bash
+gha issues -r i-am-bee/beeai-framework --label python
+```
+
 
 ## Contributing
 

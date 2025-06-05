@@ -53,8 +53,8 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&domain, "domain", "d", "github.com", "Github domain")
-	rootCmd.Flags().StringVarP(&startdate, "start", "s", utils.GetDefaultStartDate(), "Collect activities starting on this date")
-	rootCmd.Flags().StringVarP(&enddate, "end", "e", utils.GetDefaultEndDate(), "Collect activities up to this date")
+	rootCmd.PersistentFlags().StringVarP(&startdate, "start", "s", utils.GetDefaultStartDate(), "Collect activities starting on this date")
+	rootCmd.PersistentFlags().StringVarP(&enddate, "end", "e", utils.GetDefaultEndDate(), "Collect activities up to this date")
 	rootCmd.Flags().BoolVarP(&lastweek, "last-week", "l", false, "Collect activities for last week (last week Monday to last week Friday)")
 	rootCmd.Flags().BoolVarP(&thisweek, "this-week", "w", false, "Collect activities for this week (Monday to Friday)")
 	rootCmd.Flags().BoolVarP(&today, "today", "n", false, "Collect activities for today")

@@ -8,7 +8,7 @@ import (
 	"github-activity/pkg/utils"
 )
 
-func getGithubPrsQuery(repo string, labels []string, endDate string, startDate string, cursor string) string {
+func getGithubIssuesQuery(repo string, labels []string, endDate string, startDate string, cursor string) string {
 	labelStr := ""
 	dateStr := ""
 	for _, label := range labels {
@@ -25,13 +25,13 @@ func getGithubPrsQuery(repo string, labels []string, endDate string, startDate s
 		dateStr += fmt.Sprintf(` created:>%s `, startDate)
 	}
 
-	prQuery := fmt.Sprintf(`
+	issueQuery := fmt.Sprintf(`
 	query {
-		search(query: "repo:%s is:pr %s %s is:closed", type: ISSUE, first: 100 , after: "%s") {
+		search(query: "repo:%s is:issue %s %s ", type: ISSUE, first: 100 , after: "%s") {
 			issueCount
 			edges {
 				node {
-					... on PullRequest {
+					... on Issue {
 						id
 						number
 						url
@@ -55,19 +55,6 @@ func getGithubPrsQuery(repo string, labels []string, endDate string, startDate s
 						createdAt
 						updatedAt
 						closedAt
-						mergedAt
-						baseRefName
-						changedFiles
-						additions
-						deletions
-						isDraft
-						commits(first: 100) {
-							nodes {
-								commit {
-									committedDate
-								}
-							}
-						}
 						repository{
 							id
 						}
@@ -83,7 +70,7 @@ func getGithubPrsQuery(repo string, labels []string, endDate string, startDate s
 								}
 							}
 						}
-						closingIssuesReferences(first: 5){
+						closedByPullRequestsReferences(first: 5){
 							edges {
 								node {
 									number
@@ -109,15 +96,15 @@ func getGithubPrsQuery(repo string, labels []string, endDate string, startDate s
 		}
 	}`, repo, labelStr, dateStr, cursor)
 
-	return prQuery
+	return issueQuery
 }
 
-type gitHubPrs struct {
+type gitHubIssues struct {
 	Data struct {
 		Search struct {
 			IssueCount int `json:"issueCount"`
 			Edges      []struct {
-				Node Node `json:"node"`
+				Node IssueNode `json:"node"`
 			} `json:"edges"`
 			PageInfo struct {
 				HasNextPage bool   `json:"hasNextPage"`
@@ -127,7 +114,7 @@ type gitHubPrs struct {
 	} `json:"data"`
 }
 
-type Node struct {
+type IssueNode struct {
 	ID     string `json:"id"`
 	Number int    `json:"number"`
 	URL    string `json:"url"`
@@ -147,19 +134,6 @@ type Node struct {
 	CreatedAt    string `json:"createdAt"`
 	UpdatedAt    string `json:"updatedAt"`
 	ClosedAt     string `json:"closedAt"`
-	MergedAt     string `json:"mergedAt"`
-	BaseRefName  string `json:"baseRefName"`
-	ChangedFiles int    `json:"changedFiles"`
-	Additions    int    `json:"additions"`
-	Deletions    int    `json:"deletions"`
-	IsDraft      bool   `json:"isDraft"`
-	Commits      struct {
-		Nodes []struct {
-			Commit struct {
-				CommittedDate string `json:"committedDate"`
-			} `json:"commit"`
-		} `json:"nodes"`
-	} `json:"commits"`
 	Repository struct {
 		ID string `json:"id"`
 	} `json:"repository"`
@@ -170,9 +144,9 @@ type Node struct {
 	Assignees struct {
 		Edges []interface{} `json:"edges"`
 	} `json:"assignees"`
-	ClosingIssuesReferences struct {
+	ClosedByPullRequestsReferences struct {
 		Edges []interface{} `json:"edges"`
-	} `json:"closingIssuesReferences"`
+	} `json:"closedByPullRequestsReferences"`
 	Participants struct {
 		Edges []struct {
 			Node Participant `json:"node"`
@@ -180,20 +154,7 @@ type Node struct {
 	} `json:"participants"`
 }
 
-type Label struct {
-	Name string `json:"name"`
-}
-
-type Comment struct {
-	Name string `json:"body"`
-}
-
-type Participant struct {
-	Login string `json:"login"`
-	URL   string `json:"url"`
-}
-
-func queryGithubApiPrs(url, query, token string, prData *gitHubPrs) error {
+func queryGithubApiIssues(url, query, token string, issueData *gitHubIssues) error {
 	res, err := callGithubApi(url, query, token)
 	if err != nil {
 		return err
@@ -201,7 +162,7 @@ func queryGithubApiPrs(url, query, token string, prData *gitHubPrs) error {
 
 	resBody, _ := io.ReadAll(res.Body)
 
-	if err = json.Unmarshal(resBody, &prData); err != nil {
+	if err = json.Unmarshal(resBody, &issueData); err != nil {
 		fmt.Println("cannot unmarshal json")
 		return err
 	}
@@ -210,8 +171,8 @@ func queryGithubApiPrs(url, query, token string, prData *gitHubPrs) error {
 
 }
 
-func printPrDataOutput(prData *gitHubPrs, output string) {
-	jsonPretty, err := json.MarshalIndent(prData, "", "    ")
+func printIssueDataOutput(issueData *gitHubIssues, output string) {
+	jsonPretty, err := json.MarshalIndent(issueData, "", "    ")
 	if err != nil {
 		fmt.Println("Error marshaling JSON: ", err)
 	}
