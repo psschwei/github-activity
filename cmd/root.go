@@ -6,8 +6,8 @@ package cmd
 import (
 	"os"
 
-	"github.com/psschwei/github-activity/pkg/github"
-	"github.com/psschwei/github-activity/pkg/utils"
+	"github-activity/pkg/github"
+	"github-activity/pkg/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -19,6 +19,10 @@ var token string
 var lastweek bool
 var thisweek bool
 var today bool
+
+var repo string
+var labels []string
+var output string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -51,9 +55,9 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&domain, "domain", "d", "github.com", "Github domain")
 	rootCmd.PersistentFlags().StringVarP(&startdate, "start", "s", utils.GetDefaultStartDate(), "Collect activities starting on this date")
 	rootCmd.PersistentFlags().StringVarP(&enddate, "end", "e", utils.GetDefaultEndDate(), "Collect activities up to this date")
-	rootCmd.PersistentFlags().BoolVarP(&lastweek, "last-week", "l", false, "Collect activities for last week (last week Monday to last week Friday")
-	rootCmd.PersistentFlags().BoolVarP(&thisweek, "this-week", "w", false, "Collect activities for this week (Monday to Friday")
-	rootCmd.PersistentFlags().BoolVarP(&today, "today", "n", false, "Collect activities for today")
+	rootCmd.Flags().BoolVarP(&lastweek, "last-week", "l", false, "Collect activities for last week (last week Monday to last week Friday)")
+	rootCmd.Flags().BoolVarP(&thisweek, "this-week", "w", false, "Collect activities for this week (Monday to Friday)")
+	rootCmd.Flags().BoolVarP(&today, "today", "n", false, "Collect activities for today")
 	rootCmd.PersistentFlags().StringVarP(&username, "user", "u", utils.GetCurrentUsername(), "Username")
 	rootCmd.PersistentFlags().StringVarP(&token, "token", "t", "", "Github Personal Access Token (default `$GITHUB_TOKEN`)")
 }

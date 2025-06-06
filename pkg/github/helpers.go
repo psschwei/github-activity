@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -127,7 +128,7 @@ type gitHubActivity struct {
 	}
 }
 
-func queryGithubApi(url, query, token string, userActivity *gitHubActivity) error {
+func callGithubApi(url, query, token string) (*http.Response, error) {
 	payload := map[string]string{"query": query}
 	payloadBytes, _ := json.Marshal(payload)
 	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(payloadBytes))
@@ -140,12 +141,21 @@ func queryGithubApi(url, query, token string, userActivity *gitHubActivity) erro
 
 	res, err := client.Do(req)
 	if err != nil {
-		fmt.Errorf("unable to query github api")
-		return err
+		return res, fmt.Errorf("unable to query github api")
 	}
 
 	if res.StatusCode != 200 {
-		return errors.New("error querying github api: " + res.Status)
+		return res, errors.New("error querying github api: " + res.Status)
+	}
+
+	return res, err
+
+}
+
+func queryGithubApi(url, query, token string, userActivity *gitHubActivity) error {
+	res, err := callGithubApi(url, query, token)
+	if err != nil {
+		return err
 	}
 
 	resBody, _ := io.ReadAll(res.Body)
@@ -248,4 +258,18 @@ func printActivityOutput(userActivity *gitHubActivity) {
 	}
 
 	fmt.Printf(fmt.Sprintf("\nTotals: PRs(%d) Reviews(%d) Issues(%d)", len(data.PullRequestContributions.Edges), len(data.PullRequestReviewContributions.Edges), len(data.IssueContributions.Edges)))
+}
+
+func printToFile(str, file string) error {
+	f, err := os.Create(file)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	if _, err := f.WriteString(str); err != nil {
+		return err
+	}
+
+	return nil
 }
