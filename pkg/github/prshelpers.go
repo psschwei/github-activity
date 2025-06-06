@@ -27,7 +27,7 @@ func getGithubPrsQuery(repo string, labels []string, endDate string, startDate s
 
 	prQuery := fmt.Sprintf(`
 	query {
-		search(query: "repo:%s is:pr %s %s is:closed", type: ISSUE, first: 100 , after: "%s") {
+		search(query: "repo:%s is:pr %s %s ", type: ISSUE, first: 100 , after: "%s") {
 			issueCount
 			edges {
 				node {

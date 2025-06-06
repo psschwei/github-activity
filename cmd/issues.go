@@ -18,8 +18,9 @@ var issuesCmd = &cobra.Command{
 }
 
 func init() {
-	issuesCmd.PersistentFlags().StringVarP(&repo, "repo", "r", "i-am-bee/beeai-framework", "Github org/repo")
-	issuesCmd.PersistentFlags().StringArrayVarP(&labels, "label", "l", []string{"python"}, "Issue/PR label")
+	issuesCmd.PersistentFlags().StringVarP(&repo, "repo", "r", "", "Github org/repo")
+	issuesCmd.PersistentFlags().StringArrayVarP(&labels, "label", "l", []string{}, "Issue/PR label")
 	issuesCmd.PersistentFlags().StringVarP(&output, "output", "o", "", "Output Filename (JSON)")
+	issuesCmd.MarkPersistentFlagRequired("repo")
 	rootCmd.AddCommand(issuesCmd)
 }
